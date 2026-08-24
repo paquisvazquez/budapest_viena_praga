@@ -1,0 +1,1551 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Budapest · Viena · Praga — Guía del viaje</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0F1626;
+    --surface:#1A2440;
+    --surface-2:#232F53;
+    --surface-3:#2B3862;
+    --text:#EDE8DB;
+    --text-dim:#A5ADC7;
+    --text-faint:#6F7794;
+    --line:rgba(237,232,219,0.10);
+
+    --bp-1:#C1440E;
+    --bp-2:#2E8B79;
+    --vi-1:#C9A227;
+    --vi-2:#7A2E3B;
+    --pr-1:#E3B23C;
+    --pr-2:#33604A;
+
+    --font-display:'Fraunces', serif;
+    --font-body:'Public Sans', sans-serif;
+    --font-mono:'IBM Plex Mono', monospace;
+  }
+
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0; padding:0;}
+  body{
+    background:var(--ink);
+    color:var(--text);
+    font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important;}
+  }
+
+  .app{
+    max-width:520px;
+    margin:0 auto;
+    min-height:100vh;
+    background:
+      radial-gradient(1200px 400px at 50% -10%, rgba(46,139,121,0.10), transparent 60%),
+      var(--ink);
+    position:relative;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding:38px 22px 22px;
+    position:relative;
+    overflow:hidden;
+    border-bottom:1px solid var(--line);
+  }
+  .hero::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(180deg, rgba(15,22,38,0) 0%, var(--ink) 100%),
+      repeating-linear-gradient(115deg, rgba(237,232,219,0.035) 0 2px, transparent 2px 26px);
+    pointer-events:none;
+  }
+  .eyebrow{
+    font-family:var(--font-mono);
+    font-size:11px;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--text-faint);
+    position:relative;
+  }
+  .hero h1{
+    font-family:var(--font-display);
+    font-weight:600;
+    font-size:38px;
+    line-height:1.05;
+    margin:10px 0 6px;
+    position:relative;
+    letter-spacing:-0.01em;
+  }
+  .hero h1 em{
+    font-style:italic;
+    font-weight:400;
+    color:var(--text-dim);
+  }
+  .hero .sub{
+    font-size:14px;
+    color:var(--text-dim);
+    max-width:34ch;
+    line-height:1.5;
+    position:relative;
+  }
+  .river{
+    margin-top:22px;
+    height:34px;
+    position:relative;
+  }
+  .river svg{width:100%; height:100%; display:block;}
+
+  /* ---------- CITY TABS ---------- */
+  .city-tabs{
+    display:flex;
+    gap:8px;
+    padding:16px 22px 0;
+    position:sticky;
+    top:0;
+    z-index:20;
+    background:var(--ink);
+    border-bottom:1px solid var(--line);
+  }
+  .city-tab{
+    flex:1;
+    text-align:center;
+    padding:12px 6px 14px;
+    font-family:var(--font-mono);
+    font-size:12px;
+    letter-spacing:0.04em;
+    color:var(--text-faint);
+    border:none;
+    background:none;
+    cursor:pointer;
+    position:relative;
+    border-bottom:2px solid transparent;
+  }
+  .city-tab .flag{font-family:var(--font-body); font-size:15px; display:block; margin-bottom:3px;}
+  .city-tab.active{color:var(--text);}
+  .city-tab[data-city="budapest"].active{border-color:var(--bp-1); color:var(--bp-1);}
+  .city-tab[data-city="viena"].active{border-color:var(--vi-1); color:var(--vi-1);}
+  .city-tab[data-city="praga"].active{border-color:var(--pr-1); color:var(--pr-1);}
+
+  .city-panel{display:none; padding:20px 22px 60px;}
+  .city-panel.active{display:block;}
+
+  /* ---------- SECTION NAV ---------- */
+  .section-nav{
+    display:flex;
+    gap:6px;
+    margin-bottom:22px;
+    background:var(--surface);
+    border-radius:12px;
+    padding:4px;
+    border:1px solid var(--line);
+  }
+  .section-nav button{
+    flex:1;
+    padding:9px 4px;
+    border:none;
+    border-radius:9px;
+    background:none;
+    color:var(--text-faint);
+    font-family:var(--font-body);
+    font-weight:600;
+    font-size:12.5px;
+    cursor:pointer;
+  }
+  .section-nav button.active{background:var(--surface-3); color:var(--text);}
+
+  .sub-section{display:none;}
+  .sub-section.active{display:block;}
+
+  /* ---------- TICKET / TRIP INFO ---------- */
+  .ticket{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:18px 20px;
+    margin-bottom:18px;
+    position:relative;
+  }
+  .ticket-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-family:var(--font-mono);
+  }
+  .ticket-city{font-size:19px; font-family:var(--font-display); font-weight:600;}
+  .ticket-arrow{color:var(--text-faint); font-size:13px; padding:0 10px;}
+  .ticket-time{font-size:12px; color:var(--text-dim); margin-top:3px;}
+  .ticket-dash{
+    border-top:1px dashed var(--line);
+    margin:14px 0;
+    position:relative;
+  }
+  .ticket-dash::before, .ticket-dash::after{
+    content:""; position:absolute; top:-8px; width:16px; height:16px;
+    background:var(--ink); border-radius:50%;
+  }
+  .ticket-dash::before{left:-28px;}
+  .ticket-dash::after{right:-28px;}
+  .ticket-meta{display:flex; justify-content:space-between; font-size:12px; color:var(--text-dim);}
+  .ticket-meta b{color:var(--text); font-weight:600;}
+
+  /* ---------- CHECKLIST CARD ---------- */
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:18px 20px;
+    margin-bottom:16px;
+  }
+  .card h3{
+    font-family:var(--font-display);
+    font-size:18px;
+    font-weight:600;
+    margin:0 0 12px;
+  }
+  .check-list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:9px;}
+  .check-list li{display:flex; gap:10px; font-size:13.5px; line-height:1.5; color:var(--text-dim);}
+  .check-list .ok{color:var(--bp-2);}
+  .check-list .no{color:#C1626E;}
+  .check-list b{color:var(--text); font-weight:600;}
+
+  /* ---------- DAY ACCORDION ---------- */
+  .day{
+    border:1px solid var(--line);
+    border-radius:16px;
+    margin-bottom:12px;
+    overflow:hidden;
+    background:var(--surface);
+  }
+  .day-head{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:16px 18px;
+    cursor:pointer;
+    user-select:none;
+  }
+  .day-date{
+    font-family:var(--font-mono);
+    font-size:11px;
+    color:var(--text-faint);
+    width:52px;
+    line-height:1.3;
+    flex-shrink:0;
+  }
+  .day-date b{display:block; font-size:20px; color:var(--text); font-family:var(--font-display);}
+  .day-title{flex:1;}
+  .day-title h4{margin:0; font-size:15.5px; font-weight:700; font-family:var(--font-body);}
+  .day-title span{font-size:12px; color:var(--text-dim);}
+  .day-chevron{
+    font-size:13px; color:var(--text-faint);
+    transition:transform .25s ease;
+  }
+  .day.open .day-chevron{transform:rotate(180deg);}
+  .day-body{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .35s ease;
+  }
+  .day.open .day-body{max-height:4000px;}
+  .day-body-inner{padding:0 18px 20px 18px;}
+
+  .route{position:relative; margin:4px 0 16px; padding-left:22px;}
+  .route::before{
+    content:"";
+    position:absolute; left:5px; top:6px; bottom:6px;
+    width:2px;
+    background:linear-gradient(var(--stop-color,var(--bp-1)), var(--stop-color,var(--bp-1)));
+    opacity:0.35;
+  }
+  .stop{position:relative; padding-bottom:16px;}
+  .stop:last-child{padding-bottom:0;}
+  .stop::before{
+    content:"";
+    position:absolute; left:-22px; top:4px;
+    width:9px; height:9px; border-radius:50%;
+    background:var(--stop-color, var(--bp-1));
+    box-shadow:0 0 0 3px var(--surface);
+  }
+  .stop a{
+    color:var(--text);
+    text-decoration:none;
+    font-weight:600;
+    font-size:14px;
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+  }
+  .stop a::after{content:"↗"; font-size:11px; color:var(--text-faint); font-weight:400;}
+  .stop .note{display:block; font-size:12.5px; color:var(--text-dim); margin-top:2px; line-height:1.5;}
+  .stop.fav a{color:var(--stop-color, var(--bp-1));}
+  .stop .star{font-size:11px; margin-right:2px;}
+
+  .stop-row{display:flex; align-items:center; justify-content:space-between; gap:8px;}
+  .info-toggle{
+    flex-shrink:0;
+    width:20px; height:20px;
+    border-radius:50%;
+    border:1px solid var(--line);
+    background:var(--surface-2);
+    color:var(--text-faint);
+    font-size:10.5px;
+    font-family:var(--font-mono);
+    cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    padding:0;
+  }
+  .stop.info-open .info-toggle{background:var(--stop-color, var(--bp-1)); color:var(--ink); border-color:transparent;}
+  .stop-detail{
+    max-height:0; overflow:hidden;
+    transition:max-height .3s ease;
+    font-size:12px; color:var(--text-dim); line-height:1.6;
+  }
+  .stop.info-open .stop-detail{max-height:340px; margin-top:8px;}
+
+  .time-badge{
+    display:inline-block;
+    font-family:var(--font-mono);
+    font-size:11px;
+    background:var(--surface-3);
+    color:var(--text-dim);
+    padding:3px 8px;
+    border-radius:6px;
+    margin-bottom:8px;
+  }
+
+  .tip{
+    background:var(--surface-2);
+    border-left:2px solid var(--stop-color, var(--bp-1));
+    border-radius:0 10px 10px 0;
+    padding:10px 12px;
+    font-size:12.5px;
+    color:var(--text-dim);
+    line-height:1.55;
+    margin:10px 0;
+  }
+  .tip b{color:var(--text);}
+
+  .dinner-chip{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    background:var(--surface-2);
+    border-radius:10px;
+    padding:10px 12px;
+    margin-top:14px;
+    font-size:12.5px;
+  }
+  .dinner-chip span{color:var(--text-dim);}
+  .dinner-chip b{color:var(--text); font-weight:600;}
+  .dinner-chip a{
+    font-family:var(--font-mono);
+    font-size:11px;
+    color:var(--stop-color, var(--bp-1));
+    text-decoration:none;
+    border:1px solid currentColor;
+    padding:5px 9px;
+    border-radius:20px;
+    flex-shrink:0;
+  }
+
+  .maps-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    width:100%;
+    padding:12px;
+    border-radius:12px;
+    background:var(--surface-3);
+    color:var(--text);
+    text-decoration:none;
+    font-size:13px;
+    font-weight:600;
+    margin-bottom:18px;
+    border:1px solid var(--line);
+  }
+  .maps-btn small{color:var(--text-faint); font-weight:400; font-family:var(--font-mono); font-size:10.5px;}
+
+  /* ---------- RESTAURANTS ---------- */
+  .rest-scroll{display:flex; gap:12px; overflow-x:auto; padding-bottom:6px; margin:0 -22px 4px; padding-left:22px; padding-right:22px; scrollbar-width:none;}
+  .rest-scroll::-webkit-scrollbar{display:none;}
+  .rest-card{
+    flex:0 0 208px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:16px;
+  }
+  .rest-medal{font-size:18px; margin-bottom:8px; display:block;}
+  .rest-card h5{margin:0 0 5px; font-family:var(--font-display); font-size:16px; font-weight:600;}
+  .rest-card p{margin:0 0 12px; font-size:12px; color:var(--text-dim); line-height:1.5; min-height:52px;}
+  .rest-tag{
+    display:inline-block; font-family:var(--font-mono); font-size:9.5px;
+    color:var(--bp-2); border:1px solid var(--bp-2); border-radius:20px;
+    padding:2px 7px; margin-bottom:10px;
+  }
+  .rest-card a{
+    display:block; text-align:center;
+    font-size:11.5px; font-weight:600;
+    color:var(--ink); background:var(--text);
+    padding:8px; border-radius:9px; text-decoration:none;
+  }
+
+  /* ---------- INFO PRACTICA ---------- */
+  .info-accordion .card{margin-bottom:10px; cursor:pointer;}
+  .info-head{display:flex; justify-content:space-between; align-items:center;}
+  .info-head h3{margin:0;}
+  .info-icon{color:var(--text-faint); font-size:13px;}
+  .info-body{max-height:0; overflow:hidden; transition:max-height .3s ease;}
+  .info-open .info-body{max-height:600px; margin-top:12px;}
+  .info-body p{font-size:13px; color:var(--text-dim); line-height:1.65; margin:0 0 8px;}
+  .info-body p:last-child{margin-bottom:0;}
+  .info-body b{color:var(--text);}
+
+  .pill-row{display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;}
+  .pill{font-family:var(--font-mono); font-size:11px; background:var(--surface-3); color:var(--text-dim); padding:4px 9px; border-radius:20px;}
+
+  /* ---------- FAVORITOS ---------- */
+  .fav-grid{display:flex; flex-direction:column; gap:8px;}
+  .fav-row{display:flex; align-items:center; gap:10px; font-size:13px; color:var(--text-dim);}
+  .fav-rank{font-size:15px; width:22px; flex-shrink:0;}
+  .fav-row b{color:var(--text); font-weight:600;}
+  .avoid-row{display:flex; align-items:center; gap:10px; font-size:13px; color:var(--text-faint);}
+  .avoid-row span:first-child{color:#C1626E; font-size:13px;}
+
+  /* ---------- COMING SOON ---------- */
+  .coming-soon{
+    text-align:center;
+    padding:70px 20px 50px;
+  }
+  .coming-soon .glyph{font-size:34px; margin-bottom:14px; display:block;}
+  .coming-soon h3{font-family:var(--font-display); font-size:22px; font-weight:600; margin:0 0 8px;}
+  .coming-soon p{font-size:13px; color:var(--text-dim); max-width:32ch; margin:0 auto; line-height:1.6;}
+
+  .section-label{
+    font-family:var(--font-mono); font-size:11px; letter-spacing:0.1em; text-transform:uppercase;
+    color:var(--text-faint); margin:26px 0 12px;
+  }
+  .section-label:first-child{margin-top:0;}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="hero">
+    <span class="eyebrow">05 — 14 SEPTIEMBRE 2026</span>
+    <h1>Tres ciudades,<br><em>un mismo río.</em></h1>
+    <p class="sub">Budapest, Viena y Praga a pie, sin prisas. Toca cualquier parada para abrirla en el mapa.</p>
+    <div class="river">
+      <svg viewBox="0 0 500 34" preserveAspectRatio="none">
+        <path d="M0,18 C60,4 100,32 160,18 C220,4 260,32 320,18 C380,4 420,32 500,16" fill="none" stroke="#2E8B79" stroke-width="1.4" opacity="0.55"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="city-tabs">
+    <button class="city-tab active" data-city="budapest"><span class="flag">🇭🇺</span>Budapest</button>
+    <button class="city-tab" data-city="viena"><span class="flag">🇦🇹</span>Viena</button>
+    <button class="city-tab" data-city="praga"><span class="flag">🇨🇿</span>Praga</button>
+  </div>
+
+  <!-- ================= BUDAPEST ================= -->
+  <div class="city-panel active" id="panel-budapest" style="--stop-color:#C1440E">
+
+    <div class="section-nav">
+      <button class="active" data-target="bp-itinerario">Itinerario</button>
+      <button data-target="bp-comer">Dónde comer</button>
+      <button data-target="bp-info">Info práctica</button>
+    </div>
+
+    <!-- ITINERARIO -->
+    <div class="sub-section active" id="bp-itinerario">
+
+      <div class="ticket">
+        <div class="ticket-row">
+          <div><div class="ticket-city">MAD</div><div class="ticket-time">Madrid · 10:35</div></div>
+          <div class="ticket-arrow">✈ — — —</div>
+          <div style="text-align:right"><div class="ticket-city">BUD</div><div class="ticket-time">Budapest · 13:45</div></div>
+        </div>
+        <div class="ticket-dash"></div>
+        <div class="ticket-meta"><span>Sábado 5 septiembre</span><b>K+K Hotel Opera Budapest</b></div>
+      </div>
+
+      <a class="maps-btn" href="https://maps.app.goo.gl/tPPSCaQsN2AoJgHg6" target="_blank" rel="noopener">
+        🗺️ Ver mapa completo de Budapest <small>(puntos señalizados)</small>
+      </a>
+
+      <div class="card">
+        <h3>Antes de viajar</h3>
+        <ul class="check-list">
+          <li><span class="ok">✔</span><span><b>Free Tour en español</b> — ya reservado, domingo 10:00 h.</span></li>
+          <li><span class="ok">✔</span><span><b>Crucero nocturno por el Danubio</b> — comprado: sábado 19:40, 1 hora, en español, 2 personas.</span></li>
+          <li><span class="no">✕</span><span>Parlamento por dentro — no encaja con vuestro ritmo de viaje.</span></li>
+          <li><span class="no">✕</span><span>Balnearios — prescindible según el consejo recibido.</span></li>
+        </ul>
+      </div>
+
+      <div class="day open">
+        <div class="day-head" onclick="toggleDay(this)">
+          <div class="day-date">SÁB<b>5</b></div>
+          <div class="day-title"><h4>Llegada, Pest y Danubio de noche</h4><span>Cena antes del crucero nocturno</span></div>
+          <div class="day-chevron">▾</div>
+        </div>
+        <div class="day-body"><div class="day-body-inner">
+          <p style="font-size:13px;color:var(--text-dim);line-height:1.6;margin:0 0 4px">Llegada 13:45 — con equipaje y traslado, contad con estar en el hotel sobre las 15:30–16:00. Check-in, dejar maletas y salir a caminar sobre las 16:30: Budapest se disfruta paseando, no corriendo.</p>
+          <div class="route">
+            <div class="stop"><a href="https://www.google.com/maps/search/?api=1&query=K%2BK+Hotel+Opera+Budapest" target="_blank">K+K Hotel Opera</a></div>
+
+            <div class="stop">
+              <div class="stop-row">
+                <a href="https://www.google.com/maps/search/?api=1&query=Hungarian+State+Opera+House+Budapest" target="_blank">Ópera Estatal</a>
+                <button class="info-toggle" onclick="toggleStopInfo(this)">ⓘ</button>
+              </div>
+              <div class="stop-detail">Inaugurada en 1884 con diseño de Miklós Ybl, el mismo arquitecto de la Basílica. Fachada neorrenacentista e interior dorado — de las óperas más bonitas de Europa.</div>
+            </div>
+
+            <div class="stop"><a href="https://www.google.com/maps/search/?api=1&query=Andr%C3%A1ssy+%C3%BAt+Budapest" target="_blank">Avenida Andrássy</a></div>
+
+            <div class="stop">
+              <div class="stop-row">
+                <a href="https://www.google.com/maps/search/?api=1&query=St+Stephen%27s+Basilica+Budapest" target="_blank">Basílica de San Esteban</a>
+                <button class="info-toggle" onclick="toggleStopInfo(this)">ⓘ</button>
+              </div>
+              <span class="note">Hoy solo por fuera — volvéis mañana con calma</span>
+              <div class="stop-detail">Terminada en 1905 tras 54 años de obras (incluido el derrumbe de la cúpula original en 1868). Guarda la mano derecha momificada de San Esteban, primer rey de Hungría. Mide 96 m — igual que el Parlamento, porque ningún edificio puede superar esa altura en la ciudad. Iglesia: entrada gratuita (donativo). Cúpula: pago aparte, unos 500–2.500 HUF según temporada — ascensor o 364 escalones. Última entrada 30 min antes del cierre.</div>
+            </div>
+
+            <div class="stop"><a href="https://www.google.com/maps/search/?api=1&query=Erzs%C3%A9bet+t%C3%A9r+Budapest" target="_blank">Plaza Erzsébet</a></div>
+            <div class="stop"><a href="https://www.google.com/maps/search/?api=1&query=Danube+Promenade+Budapest" target="_blank">Orilla del Danubio</a></div>
+
+            <div class="stop">
+              <div class="stop-row">
+                <a href="https://www.google.com/maps/search/?api=1&query=Sz%C3%A9chenyi+Chain+Bridge+Budapest" target="_blank">Puente de las Cadenas</a>
+                <button class="info-toggle" onclick="toggleStopInfo(this)">ⓘ</button>
+              </div>
+              <div class="stop-detail">Inaugurado en 1849, fue el primer puente permanente entre Buda y Pest. Lo impulsó el conde István Széchenyi y lo diseñó el británico William Tierney Clark.</div>
+            </div>
+
+            <div class="stop">
+              <div class="stop-row">
+                <a href="https://www.google.com/maps/search/?api=1&query=Shoes+on+the+Danube+Bank+Budapest" target="_blank">Zapatos del Danubio</a>
+                <button class="info-toggle" onclick="toggleStopInfo(this)">ⓘ</button>
+              </div>
+              <div class="stop-detail">Memorial de 2005 en homenaje a los judíos asesinados en esta orilla por las Cruces Flechadas en el invierno de 1944–45: los obligaban a descalzarse antes de disparar, para no perder el calzado.</div>
+            </div>
+
+            <div class="stop">
+              <div class="stop-row">
+                <a href="https://www.google.com/maps/search/?api=1&query=Hungarian+Parliament+Building" target="_blank">Parlamento</a>
+                <button class="info-toggle" onclick="toggleStopInfo(this)">ⓘ</button>
+              </div>
+              <span class="note">Solo exterior</span>
+              <div class="stop-detail">Terminado en 1904, obra de Imre Steindl — el edificio más grande de Hungría. Su cúpula mide también 96 m, en un guiño simbólico entre el poder civil y el religioso.</div>
+            </div>
+          </div>
+
+          <span class="time-badge">18:45 – 19:15</span>
+          <p style="font-size:12.5px;color:var(--text-dim);line-height:1.6;margin:0 0 4px">Cena temprana para llegar con margen al crucero de las 19:40 — buscad algo con opciones sin gluten, no hace falta que sea un sitio exclusivamente celíaco.</p>
+          <div class="dinner-chip">
+            <span>Cena de esta noche</span>
+            <a onclick="goSection('bp-comer')">Ver opciones →</a>
+          </div>
+
+          <span class="time-badge" style="margin-top:14px">19:40</span>
+          <div class="tip"><b>⭐⭐⭐⭐⭐ El momento estrella del viaje.</b> Crucero comprado — 1 hora, en español, 2 personas. Veréis iluminados el Parlamento, el Puente de las Cadenas, el Castillo, el Bastión y los puentes del Danubio.</div>
+
+          <p style="font-size:12.5px;color:var(--text-dim);line-height:1.6;margin:8px 0 0">Después, paseo tranquilo hasta el hotel.</p>
+        </div></div>
+      </div>
+
+      <div class="day">
+        <div class="day-head" onclick="toggleDay(this)">
+          <div class="day-date">DOM<b>6</b></div>
+          <div class="day-title"><h4>Free Tour, Barrio Judío y Basílica</h4><span>La visita interior imprescindible del viaje</span></div>
+          <div class="day-chevron">▾</div>
+        </div>
+        <div class="day-body"><div class="day-body-inner">
+          <p style="font-size:13px;color:var(--text-dim);line-height:1.6;margin:0 0 4px">Desayuno con calma — salid sobre las 09:15 para llegar bien al Free Tour.</p>
+
+          <span class="time-badge">10:00 h</span>
+          <div class="tip">Free Tour ya reservado — 2h30 aprox., termina sobre las 12:30–13:00. No programéis nada justo después: dependerá de dónde acabe exactamente.</div>
+
+          <span class="time-badge" style="margin-top:10px">13:00 – 14:30</span>
+          <div class="dinner-chip">
+            <span>Comida — buen momento para cocina húngara</span>
+            <a onclick="goSection('bp-comer')">Ver opciones →</a>
+          </div>
+
+          <div class="route" style="margin-top:16px">
+            <div class="stop"><a href="https://www.google.com/maps/search/?api=1&query=Jewish+Quarter+Budapest" target="_blank">Barrio Judío</a><span class="note">15:00 — calles, murales, patios, distrito VII, sin prisas</span></div>
+
+            <div class="stop">
+              <div class="stop-row">
+                <a href="https://www.google.com/maps/search/?api=1&query=Dohany+Street+Synagogue+Budapest" target="_blank">Gran Sinagoga</a>
+                <button class="info-toggle" onclick="toggleStopInfo(this)">ⓘ</button>
+              </div>
+              <span class="note">Exterior — entrad solo si os apetece mucho al verla</span>
+              <div class="stop-detail">Construida entre 1854 y 1859 en estilo morisco, es la sinagoga más grande de Europa. Junto a ella nació Theodor Herzl, fundador del sionismo moderno.</div>
+            </div>
+
+            <div class="stop fav">
+              <div class="stop-row">
+                <span class="star">⭐</span><a href="https://www.google.com/maps/search/?api=1&query=Szimpla+Kert+Budapest" target="_blank">Szimpla Kert</a>
+                <button class="info-toggle" onclick="toggleStopInfo(this)">ⓘ</button>
+              </div>
+              <span class="note">Este sí entrad, aunque sea solo para tomar algo</span>
+              <div class="stop-detail">Abrió en 2002 en un edificio en ruinas del barrio judío y fue el pionero del movimiento "romkocsma" (bar en ruinas) que después se copió por toda la ciudad.</div>
+            </div>
+
+            <div class="stop fav">
+              <div class="stop-row">
+                <span class="star">⭐</span><a href="https://www.google.com/maps/search/?api=1&query=St+Stephen%27s+Basilica+Budapest" target="_blank">Basílica de San Esteban</a>
+                <button class="info-toggle" onclick="toggleStopInfo(this)">ⓘ</button>
+              </div>
+              <span class="note">16:30–17:00, sin hora fija — entrada a la cúpula ya comprada. Interior + cúpula (~1h). Una de las pocas visitas de interior que mantenemos</span>
+              <div class="stop-detail">Entrada a la iglesia gratuita (donativo); la cúpula ya la tenéis comprada — ascensor o 364 escalones. Desde la terraza, una vista de Pest completamente distinta a la que tendréis mañana desde Buda.</div>
+            </div>
+          </div>
+
+          <p style="font-size:12.5px;color:var(--text-dim);line-height:1.6;margin:8px 0 0">Desde las 18:15, sin obligaciones: pasead por Andrássy, volved al Danubio, tomad algo o descansad — el hotel está prácticamente al lado.</p>
+        </div></div>
+      </div>
+
+      <div class="day">
+        <div class="day-head" onclick="toggleDay(this)">
+          <div class="day-date">LUN<b>7</b></div>
+          <div class="day-title"><h4>Buda, Castillo y Citadella</h4><span>El día que más vais a caminar</span></div>
+          <div class="day-chevron">▾</div>
+        </div>
+        <div class="day-body"><div class="day-body-inner">
+          <p style="font-size:13px;color:var(--text-dim);line-height:1.6;margin:0 0 4px">Salida del hotel 08:30–09:00, hacia el Puente de las Cadenas.</p>
+
+          <div class="route">
+            <div class="stop"><a href="https://www.google.com/maps/search/?api=1&query=Sz%C3%A9chenyi+Chain+Bridge+Budapest" target="_blank">Puente de las Cadenas</a><span class="note">Lo cruzáis de día esta vez — ya lo visteis iluminado el sábado</span></div>
+
+            <div class="stop">
+              <div class="stop-row">
+                <a href="https://www.google.com/maps/search/?api=1&query=Buda+Castle" target="_blank">Castillo de Buda</a>
+                <button class="info-toggle" onclick="toggleStopInfo(this)">ⓘ</button>
+              </div>
+              <span class="note">09:30 — subida andando o en funicular. Sin museos: patios, arquitectura, jardines y miradores; callejead un rato por el barrio</span>
+              <div class="stop-detail">De origen medieval, el palacio actual es en gran parte una reconstrucción barroca del siglo XVIII. Quedó muy dañado en el asedio de 1945 y se restauró después — por eso conviven fachadas históricas con reconstrucciones recientes.</div>
+            </div>
+
+            <div class="stop">
+              <div class="stop-row">
+                <a href="https://www.google.com/maps/search/?api=1&query=Matthias+Church+Budapest" target="_blank">Iglesia de Matías</a>
+                <button class="info-toggle" onclick="toggleStopInfo(this)">ⓘ</button>
+              </div>
+              <span class="note">Opcional — si os apetece al pasar, entrad; si no, exterior y seguid</span>
+              <div class="stop-detail">Con más de 700 años de historia, se reconstruyó en estilo neogótico en el siglo XIX. Su tejado de tejas de colores Zsolnay es de las imágenes más fotografiadas de Buda, y fue iglesia de coronación de varios reyes húngaros.</div>
+            </div>
+
+            <div class="stop fav">
+              <div class="stop-row">
+                <span class="star">⭐</span><a href="https://www.google.com/maps/search/?api=1&query=Fisherman%27s+Bastion+Budapest" target="_blank">Bastión de los Pescadores</a>
+                <button class="info-toggle" onclick="toggleStopInfo(this)">ⓘ</button>
+              </div>
+              <span class="note">11:30 aprox. — sin prisa. Probablemente la foto más bonita del Parlamento de todo el viaje; contad terminar sobre las 12:30–13:00</span>
+              <div class="stop-detail">Construido entre 1895 y 1902 por Frigyes Schulek. Pese al nombre nunca tuvo función defensiva: rinde homenaje al gremio de pescadores que protegía este tramo de muralla medieval. Sus siete torres representan a las siete tribus fundadoras de Hungría. Terrazas inferiores y paseos: gratis 24h. Torres superiores: de pago solo entre marzo y octubre (aprox. 1.000–2.500 HUF) — de noche y en temporada baja, acceso libre.</div>
+            </div>
+          </div>
+
+          <span class="time-badge" style="margin-top:14px">13:00 – 14:30</span>
+          <div class="dinner-chip">
+            <span>Comida — bajad a una zona con más opciones</span>
+            <a onclick="goSection('bp-comer')">Ver opciones →</a>
+          </div>
+
+          <div class="tip" style="margin-top:16px">🚌 <b>Tarde: Monte Gellért y Citadella ⭐⭐⭐⭐⭐</b> — subid en el autobús 27 hasta la parada Búsuló Juhász (Citadella); comprobad la combinación más rápida en BudapestGO desde donde comáis. Desde la parada, unos 500 m (6–10 min) andando hasta la entrada norte — así os ahorráis buena parte de la cuesta.</div>
+
+          <div class="route" style="margin-top:8px">
+            <div class="stop fav">
+              <div class="stop-row">
+                <span class="star">⭐</span><a href="https://www.google.com/maps/search/?api=1&query=Citadella+Budapest" target="_blank">Citadella</a>
+                <button class="info-toggle" onclick="toggleStopInfo(this)">ⓘ</button>
+              </div>
+              <span class="note">16:00 aprox. — parque, murallas, Estatua de la Libertad y miradores, 1h30–2h. Sin entrada a la exposición</span>
+              <div class="stop-detail">La construyeron los Habsburgo entre 1851 y 1854 tras aplastar la revolución húngara de 1848–49 — sus cañones apuntaban a la propia ciudad. Reabrió por completo en primavera de 2026 tras años de obras. Parque, murallas y Estatua de la Libertad (1947): gratis, abierto hasta medianoche. Solo la exposición "Bastión de la Libertad" es de pago (unos 4.900 HUF) — con el paseo exterior os sobra.</div>
+            </div>
+
+            <div class="stop">
+              <div class="stop-row">
+                <a href="https://www.google.com/maps/search/?api=1&query=Gellert+Monument+Budapest" target="_blank">Monumento de San Gerardo</a>
+                <button class="info-toggle" onclick="toggleStopInfo(this)">ⓘ</button>
+              </div>
+              <span class="note">Bajada a pie por el Monte Gellért, sin prisa, parando en los miradores que os gusten</span>
+              <div class="stop-detail">Debe su nombre al obispo San Gerardo, quien, según la leyenda, fue arrojado colina abajo dentro de un barril con clavos por opositores paganos en el siglo XI.</div>
+            </div>
+
+            <div class="stop"><a href="https://www.google.com/maps/search/?api=1&query=Elizabeth+Bridge+Budapest" target="_blank">Puente de Isabel</a><span class="note">18:30–19:00 aprox. — de vuelta junto al Danubio</span></div>
+          </div>
+
+          <p style="font-size:12.5px;color:var(--text-dim);line-height:1.6;margin:10px 0 0">A partir de aquí, libre: tomar algo, volver al hotel o salir a cenar. Es la última noche en Budapest.</p>
+
+          <div class="dinner-chip" style="margin-top:10px">
+            <span>Última cena — sin mirar el reloj</span>
+            <a onclick="goSection('bp-comer')">Ver opciones →</a>
+          </div>
+          <div class="tip">Después, un último paseo nocturno por el Danubio.</div>
+        </div></div>
+      </div>
+
+      <div class="day">
+        <div class="day-head" onclick="toggleDay(this)">
+          <div class="day-date">MAR<b>8</b></div>
+          <div class="day-title"><h4>Salida hacia Viena</h4><span>Tren desde Budapest-Keleti</span></div>
+          <div class="day-chevron">▾</div>
+        </div>
+        <div class="day-body"><div class="day-body-inner">
+          <p style="font-size:13px;color:var(--text-dim);line-height:1.6;margin:0 0 12px">Desayuno temprano y check-out 07:45–08:00. Taxi o Bolt hasta Keleti, con el objetivo de llegar sobre las 08:30–08:45.</p>
+          <div class="ticket" style="margin-bottom:0">
+            <div class="ticket-row">
+              <div><div class="ticket-city">BUD</div><div class="ticket-time">Keleti · 09:30</div></div>
+              <div class="ticket-arrow">🚆 — — —</div>
+              <div style="text-align:right"><div class="ticket-city">VIE</div><div class="ticket-time">Viena</div></div>
+            </div>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="section-label">Lo esencial del viaje</div>
+      <div class="card">
+        <p style="font-size:12.5px;color:var(--text-dim);line-height:1.6;margin:0 0 14px">Cuatro miradores, cuatro vistas distintas de Budapest — por eso se mantienen los cuatro:</p>
+        <div class="fav-grid" style="margin-bottom:16px">
+          <div class="fav-row"><span class="fav-rank">🚢</span><span>Crucero — Budapest iluminada desde el agua</span></div>
+          <div class="fav-row"><span class="fav-rank">🏯</span><span><b>Bastión de los Pescadores</b> — la mejor imagen del Parlamento</span></div>
+          <div class="fav-row"><span class="fav-rank">⛪</span><span><b>Basílica de San Esteban</b> — tejados y Pest desde arriba</span></div>
+          <div class="fav-row"><span class="fav-rank">🌳</span><span><b>Citadella</b> — la gran panorámica general de Budapest</span></div>
+        </div>
+        <div class="fav-grid" style="margin-bottom:16px">
+          <div class="fav-row"><span class="fav-rank">🏅</span><span>Free Tour</span></div>
+          <div class="fav-row"><span class="fav-rank">🏅</span><span>Barrio Judío y Szimpla Kert</span></div>
+          <div class="fav-row"><span class="fav-rank">🏅</span><span>Cruzar el Puente de las Cadenas de día y de noche</span></div>
+        </div>
+        <div class="avoid-row"><span>✕</span><span>Parlamento por dentro, balnearios, museos del Castillo — el tiempo cunde más callejeando.</span></div>
+      </div>
+
+      <div class="tip" style="--stop-color:#2E8B79">💡 Calzado muy cómodo: contad entre 15 y 20 km al día. Con tarjeta se paga casi todo, no os obsesionéis con el cambio. El Parlamento vuelve a aparecer en cada mirador — crucero, Bastión y Citadella — siempre distinto.</div>
+
+    </div>
+
+    <!-- DONDE COMER -->
+    <div class="sub-section" id="bp-comer">
+      <div class="section-label">Recomendados — sin gluten</div>
+      <div class="rest-scroll">
+        <div class="rest-card">
+          <span class="rest-medal">🥇</span>
+          <h5>Bohémtanya</h5>
+          <p>Cocina húngara tradicional, prácticamente todo adaptado sin gluten.</p>
+          <span class="rest-tag">Sin gluten</span>
+          <a href="https://www.google.com/maps/search/?api=1&query=Boh%C3%A9mtanya+Glut%C3%A9nmentes+Vend%C3%A9gl%C5%91+Budapest" target="_blank">Ver en el mapa</a>
+        </div>
+        <div class="rest-card">
+          <span class="rest-medal">🥈</span>
+          <h5>Kata Pest</h5>
+          <p>Muy buena cocina húngara, con opciones sin gluten. Muy céntrico.</p>
+          <span class="rest-tag">Sin gluten</span>
+          <a href="https://www.google.com/maps/search/?api=1&query=Kata+Pest+Restaurant+Budapest" target="_blank">Ver en el mapa</a>
+        </div>
+        <div class="rest-card">
+          <span class="rest-medal">🥉</span>
+          <h5>Drop Restaurant</h5>
+          <p>Cocina moderna, muy recomendable para una noche algo más especial.</p>
+          <span class="rest-tag">Sin gluten</span>
+          <a href="https://www.google.com/maps/search/?api=1&query=Drop+Restaurant+Budapest" target="_blank">Ver en el mapa</a>
+        </div>
+        <div class="rest-card">
+          <span class="rest-medal">🍰</span>
+          <h5>Naspolya Nassolda</h5>
+          <p>Cafetería para tartas y desayunos, todo adaptado sin gluten.</p>
+          <span class="rest-tag">Sin gluten</span>
+          <a href="https://www.google.com/maps/search/?api=1&query=Naspolya+Nassolda+Budapest" target="_blank">Ver en el mapa</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- INFO -->
+    <div class="sub-section" id="bp-info">
+      <div class="info-accordion">
+        <div class="card" onclick="toggleInfo(this)">
+          <div class="info-head"><h3>💳 Dinero</h3><span class="info-icon">▾</span></div>
+          <div class="info-body">
+            <p>Moneda: <b>Forinto (HUF)</b>. Pagad prácticamente todo con tarjeta; llevad solo 10.000–20.000 HUF (25–50 €) por si acaso.</p>
+            <p>No cambiéis dinero en el aeropuerto ni uséis cajeros <b>Euronet</b>. Si sacáis efectivo, mejor en OTP Bank, Erste Bank, MBH Bank o UniCredit — y si el cajero pregunta si queréis convertir a euros, rechazad y pagad en HUF.</p>
+          </div>
+        </div>
+        <div class="card" onclick="toggleInfo(this)">
+          <div class="info-head"><h3>🚇 Transporte</h3><span class="info-icon">▾</span></div>
+          <div class="info-body">
+            <p>No alquiléis coche — la ciudad se recorre perfectamente andando. Para cuando estéis cansados: metro, tranvía o Bolt.</p>
+          </div>
+        </div>
+        <div class="card" onclick="toggleInfo(this)">
+          <div class="info-head"><h3>🔒 Seguridad</h3><span class="info-icon">▾</span></div>
+          <div class="info-body">
+            <p>Budapest es una ciudad muy segura. Mochila cerrada, cuidado con el móvil en sitios concurridos, y usad Bolt o taxis oficiales. No hay ningún barrio que debáis evitar.</p>
+          </div>
+        </div>
+        <div class="card" onclick="toggleInfo(this)">
+          <div class="info-head"><h3>🗣️ Idioma</h3><span class="info-icon">▾</span></div>
+          <div class="info-body">
+            <p>Se habla húngaro, pero con inglés os entenderéis sin problema en hoteles, restaurantes y comercios.</p>
+          </div>
+        </div>
+        <div class="card" onclick="toggleInfo(this)">
+          <div class="info-head"><h3>🚨 Emergencias</h3><span class="info-icon">▾</span></div>
+          <div class="info-body">
+            <p><b>112</b> — número de emergencias único en toda la Unión Europea, también válido en Hungría.</p>
+            <p>Enchufe tipo <b>C/F</b>, 230V — el mismo que en España, no hace falta adaptador.</p>
+            <p>Descargad el mapa de Budapest en <b>Google Maps sin conexión</b> antes de salir del hotel, por si falla el dato en algún momento del día.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ================= VIENA ================= -->
+  <div class="city-panel" id="panel-viena" style="--stop-color:#C9A227">
+
+    <div class="section-nav">
+      <button class="active" data-target="vi-itinerario">Itinerario</button>
+      <button data-target="vi-comer">Dónde comer</button>
+      <button data-target="vi-info">Info práctica</button>
+    </div>
+
+    <!-- ITINERARIO -->
+    <div class="sub-section active" id="vi-itinerario">
+
+      <div class="ticket">
+        <div class="ticket-row">
+          <div><div class="ticket-city">BUD</div><div class="ticket-time">Keleti · 09:30</div></div>
+          <div class="ticket-arrow">🚆 — — —</div>
+          <div style="text-align:right"><div class="ticket-city">VIE</div><div class="ticket-time">Hbf · 12:20</div></div>
+        </div>
+        <div class="ticket-dash"></div>
+        <div class="ticket-meta"><span>Martes 8 septiembre</span><b>NH Wien City</b></div>
+      </div>
+
+      <a class="maps-btn" href="https://maps.app.goo.gl/5YUPr3XFhmivyNXSA" target="_blank" rel="noopener">
+        🗺️ Ver mapa completo de Viena <small>(puntos señalizados)</small>
+      </a>
+
+      <div class="card">
+        <h3>Qué comprar ahora</h3>
+        <ul class="check-list">
+          <li><span class="ok">✔</span><span><b>Prunksaal — Biblioteca Nacional</b> — comprada. El ticket online es flexible, sin fecha ni hora fija.</span></li>
+          <li><span class="ok">✔</span><span><b>Billete de transporte de 7 días</b> (25,20 €, app WienMobil) — cubre metro, tranvía, bus y S-Bahn toda la estancia.</span></li>
+          <li><span style="color:var(--text-faint)">🎭</span><span><b>Ópera de Viena</b> — solo si sale barata: las entradas de pie (Stehplatz) cuestan 13–18 €, a la venta online desde las 10:00 del mismo día o en la taquilla propia 80 min antes de la función. Si no hay hueco, os quedáis con el exterior en el paseo del martes.</span></li>
+          <li><span class="no">✕</span><span>Vienna City Card — no compensa para este itinerario.</span></li>
+          <li><span class="no">✕</span><span>Schönbrunn, Belvedere, Hofburg, Escuela Española, Casa de Mozart, Cripta Imperial, museos — no hacen falta con este plan. Catedral (torre) y Riesenrad se compran allí mismo si apetecen.</span></li>
+        </ul>
+      </div>
+
+      <div class="day open">
+        <div class="day-head" onclick="toggleDay(this)">
+          <div class="day-date">MAR<b>8</b></div>
+          <div class="day-title"><h4>Primer contacto y Viena monumental</h4><span>La Ringstrasse encendiéndose de noche</span></div>
+          <div class="day-chevron">▾</div>
+        </div>
+        <div class="day-body"><div class="day-body-inner">
+          <p style="font-size:13px;color:var(--text-dim);line-height:1.6;margin:0 0 4px">Llegada 12:20 a la Hauptbahnhof. El hotel recomienda el autobús 13A hasta Neubaugasse — vuestra parada de metro es Neubaugasse U3. Contad estar en el NH Wien City sobre las 13:00–13:30 para dejar el equipaje.</p>
+
+          <span class="time-badge">14:00</span>
+          <div class="dinner-chip">
+            <span>Comida — confirmado <b>Gasthaus Zum Wohl</b>, 2 personas</span>
+            <a onclick="goSection('vi-comer')">Ver ficha →</a>
+          </div>
+
+          <div class="route" style="margin-top:16px">
+            <div class="stop">
+              <div class="stop-row">
+                <a href="https://www.google.com/maps/search/?api=1&query=Naschmarkt+Vienna" target="_blank">Naschmarkt</a>
+                <button class="info-toggle" onclick="toggleStopInfo(this)">ⓘ</button>
+              </div>
+              <span class="note">14:45 — paseo de unos 30 min, no hace falta más</span>
+              <div class="stop-detail">El mercado más famoso de Viena, con raíces en el siglo XVI. Hoy mezcla puestos de comida y especias con el mercadillo de los sábados.</div>
+            </div>
+
+            <div class="stop">
+              <div class="stop-row">
+                <a href="https://www.google.com/maps/search/?api=1&query=Karlskirche+Vienna" target="_blank">Karlskirche</a>
+                <button class="info-toggle" onclick="toggleStopInfo(this)">ⓘ</button>
+              </div>
+              <span class="note">15:30 — exterior + Karlsplatz</span>
+              <div class="stop-detail">Construida entre 1716 y 1737 por Fischer von Erlach, por encargo del emperador Carlos VI tras la peste de 1713. Sus columnas gemelas, inspiradas en la Columna de Trajano de Roma, son su seña más reconocible.</div>
+            </div>
+
+            <div class="stop">
+              <div class="stop-row">
+                <a href="https://www.google.com/maps/search/?api=1&query=Musikverein+Vienna" target="_blank">Musikverein</a>
+                <button class="info-toggle" onclick="toggleStopInfo(this)">ⓘ</button>
+              </div>
+              <span class="note">16:00 — exterior</span>
+              <div class="stop-detail">Sede de la Filarmónica de Viena y hogar del Concierto de Año Nuevo. Inaugurado en 1870, obra de Theophil von Hansen — el mismo arquitecto del Parlamento.</div>
+            </div>
+
+            <div class="stop">
+              <div class="stop-row">
+                <a href="https://www.google.com/maps/search/?api=1&query=Belvedere+Palace+Vienna" target="_blank">Belvedere</a>
+                <button class="info-toggle" onclick="toggleStopInfo(this)">ⓘ</button>
+              </div>
+              <span class="note">16:30 — conjunto y jardines, sin museo, 45–60 min</span>
+              <div class="stop-detail">Palacio barroco construido entre 1714 y 1723 por Johann Lukas von Hildebrandt para el príncipe Eugenio de Saboya. El Belvedere Superior guarda "El Beso" de Klimt, pero el conjunto y los jardines se disfrutan igual desde fuera.</div>
+            </div>
+
+            <div class="stop"><a href="https://www.google.com/maps/search/?api=1&query=Stadtpark+Vienna" target="_blank">Stadtpark</a><span class="note">17:30 — monumento dorado a Johann Strauss, sin detenerse mucho</span></div>
+
+            <div class="stop">
+              <div class="stop-row">
+                <a href="https://www.google.com/maps/search/?api=1&query=Vienna+State+Opera" target="_blank">Ópera Estatal de Viena</a>
+                <button class="info-toggle" onclick="toggleStopInfo(this)">ⓘ</button>
+              </div>
+              <span class="note">18:15 — arranca el paseo por la Ringstrasse. Si conseguís entrada de pie barata (ver Qué comprar ahora), podría ser por dentro; si no, solo exterior</span>
+              <div class="stop-detail">Inaugurada en 1869, fue de los primeros edificios de la Ringstrasse. Quedó muy dañada por los bombardeos de 1945 y reabrió reconstruida en 1955.</div>
+            </div>
+
+            <div class="stop">
+              <div class="stop-row">
+                <a href="https://www.google.com/maps/search/?api=1&query=Austrian+Parliament+Building+Vienna" target="_blank">Parlamento austríaco</a>
+                <button class="info-toggle" onclick="toggleStopInfo(this)">ⓘ</button>
+              </div>
+              <span class="note">Solo exterior</span>
+              <div class="stop-detail">Terminado en 1883 en estilo neoclásico griego, también de Theophil von Hansen. Frente a la fachada, la fuente de Palas Atenea vigila la entrada.</div>
+            </div>
+
+            <div class="stop">
+              <div class="stop-row">
+                <a href="https://www.google.com/maps/search/?api=1&query=Vienna+City+Hall+Rathaus" target="_blank">Rathaus</a>
+                <button class="info-toggle" onclick="toggleStopInfo(this)">ⓘ</button>
+              </div>
+              <span class="note">Solo exterior — el ayuntamiento</span>
+              <div class="stop-detail">Ayuntamiento neogótico terminado en 1883, obra de Friedrich von Schmidt. Su plaza acoge buena parte de los grandes eventos y mercadillos de la ciudad.</div>
+            </div>
+
+            <div class="stop"><a href="https://www.google.com/maps/search/?api=1&query=Burgtheater+Vienna" target="_blank">Burgtheater</a><span class="note">Solo exterior</span></div>
+
+            <div class="stop">
+              <div class="stop-row">
+                <a href="https://www.google.com/maps/search/?api=1&query=Votivkirche+Vienna" target="_blank">Votivkirche</a>
+                <button class="info-toggle" onclick="toggleStopInfo(this)">ⓘ</button>
+              </div>
+              <span class="note">19:30 aprox. — final del paseo, solo exterior</span>
+              <div class="stop-detail">Iglesia neogótica construida entre 1856 y 1879, financiada por suscripción popular tras un atentado fallido contra el emperador Francisco José I en 1853.</div>
+            </div>
+          </div>
+
+          <p style="font-size:12.5px;color:var(--text-dim);line-height:1.6;margin:8px 0 0">Desde aquí, vuelta tranquila al hotel.</p>
+
+          <span class="time-badge" style="margin-top:10px">20:30</span>
+          <div class="dinner-chip">
+            <span>Cena tranquila cerca del hotel</span>
+            <a onclick="goSection('vi-comer')">Ver opciones →</a>
+          </div>
+          <div class="tip">Habréis hecho ya 12–15 km, así que nada obligatorio después. Si apetece, paseo por Mariahilfer Straße y Spittelberg.</div>
+        </div></div>
+      </div>
+
+      <div class="day">
+        <div class="day-head" onclick="toggleDay(this)">
+          <div class="day-date">MIÉ<b>9</b></div>
+          <div class="day-title"><h4>Free Tour, Biblioteca y Schönbrunn</h4><span>Probablemente el día estrella</span></div>
+          <div class="day-chevron">▾</div>
+        </div>
+        <div class="day-body"><div class="day-body-inner">
+          <p style="font-size:13px;color:var(--text-dim);line-height:1.6;margin:0 0 4px">08:00 desayuno sin prisas. 09:00 salida hacia Helmut-Zilk-Platz.</p>
+
+          <span class="time-badge">09:45 h</span>
+          <div class="tip">Free Tour en español ya reservado, en Helmut-Zilk-Platz — 2 a 2h30 según vuestra reserva. Conoceréis la Viena histórica e imperial, sin visitas paralelas hasta que termine.</div>
+
+          <div class="route" style="margin-top:16px">
+            <div class="stop fav">
+              <div class="stop-row">
+                <span class="star">⭐</span><a href="https://www.google.com/maps/search/?api=1&query=Prunksaal+Austrian+National+Library+Vienna" target="_blank">Biblioteca Nacional — Prunksaal</a>
+                <button class="info-toggle" onclick="toggleStopInfo(this)">ⓘ</button>
+              </div>
+              <span class="note">12:15–12:30 aprox. — vuestra principal visita de interior, 45–60 min. Entrada al Prunksaal / State Hall, no confundáis con otras zonas de la Biblioteca</span>
+              <div class="stop-detail">Construido entre 1723 y 1726 por Johann Bernhard Fischer von Erlach para el emperador Carlos VI, guarda unos 200.000 libros bajo una cúpula pintada por Daniel Gran. Entrada: unos 12 € adulto. Ese miércoles abre de 09:00 a 18:00. La entrada online es flexible, sin fecha ni hora fija — os viene bien si el Free Tour termina antes o después de lo previsto.</div>
+            </div>
+          </div>
+
+          <span class="time-badge" style="margin-top:10px">13:30</span>
+          <div class="dinner-chip">
+            <span>Comida ligera por el centro</span>
+            <a onclick="goSection('vi-comer')">Ver opciones →</a>
+          </div>
+          <p style="font-size:12.5px;color:var(--text-dim);line-height:1.6;margin:8px 0 4px">Nada de dos horas — queréis aprovechar Schönbrunn. 14:30, metro U4 desde Karlsplatz.</p>
+
+          <div class="route">
+            <div class="stop fav">
+              <div class="stop-row">
+                <span class="star">⭐</span><a href="https://www.google.com/maps/search/?api=1&query=Schonbrunn+Palace+Vienna" target="_blank">Schönbrunn</a>
+                <button class="info-toggle" onclick="toggleStopInfo(this)">ⓘ</button>
+              </div>
+              <span class="note">15:00–18:00, sin entrada y sin reloj: fachada → Gran Parterre → jardines → Fuente de Neptuno → colina → Gloriette</span>
+              <div class="stop-detail">Antigua residencia de verano de los Habsburgo, con más de 1.400 estancias, en su forma actual desde mediados del siglo XVIII bajo María Teresa. El parque es gratuito y en septiembre abre hasta las 20:00. La Fuente de Neptuno funciona hasta las 16:00 — intentad llegar antes. La terraza de la Gloriette cierra a las 17:30, pero no hace falta pagar para subir: las vistas desde la colina ya son magníficas.</div>
+            </div>
+          </div>
+
+          <p style="font-size:12.5px;color:var(--text-dim);line-height:1.6;margin:8px 0 0">18:15/18:30 regreso al hotel en U4. Ducha y descanso.</p>
+
+          <span class="time-badge" style="margin-top:10px">20:00</span>
+          <div class="dinner-chip">
+            <span>Cena y Viena de noche</span>
+            <a onclick="goSection('vi-comer')">Ver opciones →</a>
+          </div>
+          <div class="tip">Después de cenar: Ópera → Albertina → Hofburg → Kohlmarkt → Graben → Catedral de San Esteban. Sin horarios, sin entradas — solo Viena iluminada. Probablemente uno de los paseos más bonitos del viaje.</div>
+        </div></div>
+      </div>
+
+      <div class="day">
+        <div class="day-head" onclick="toggleDay(this)">
+          <div class="day-date">JUE<b>10</b></div>
+          <div class="day-title"><h4>Centro histórico, Hundertwasser y Prater</h4><span>El último día completo, más relajado</span></div>
+          <div class="day-chevron">▾</div>
+        </div>
+        <div class="day-body"><div class="day-body-inner">
+          <p style="font-size:13px;color:var(--text-dim);line-height:1.6;margin:0 0 4px">09:00 — metro U3 desde Neubaugasse hasta Stephansplatz.</p>
+
+          <div class="route">
+            <div class="stop fav">
+              <div class="stop-row">
+                <span class="star">⭐</span><a href="https://www.google.com/maps/search/?api=1&query=St+Stephens+Cathedral+Vienna" target="_blank">Catedral de San Esteban</a>
+                <button class="info-toggle" onclick="toggleStopInfo(this)">ⓘ</button>
+              </div>
+              <span class="note">09:15 — interior tranquilo; la torre solo si el día está despejado y apetece. Sin comprar de antemano el paquete completo</span>
+              <div class="stop-detail">Sus cimientos son del siglo XII. La torre sur ("Steffl") mide 136 m. Sufrió un grave incendio en 1945, en los últimos días de la guerra, y se reconstruyó después. No hace falta el paquete de catacumbas + dos torres + museo: con el interior y quizá una torre es suficiente.</div>
+            </div>
+
+            <div class="stop"><a href="https://www.google.com/maps/search/?api=1&query=Graben+Vienna" target="_blank">Graben</a><span class="note">10:15 — Columna de la Peste, Iglesia de San Pedro (entrad si está abierta), Kohlmarkt</span></div>
+
+            <div class="stop">
+              <div class="stop-row">
+                <a href="https://www.google.com/maps/search/?api=1&query=Hofburg+Palace+Vienna" target="_blank">Hofburg</a>
+                <button class="info-toggle" onclick="toggleStopInfo(this)">ⓘ</button>
+              </div>
+              <span class="note">11:00 — Michaelerplatz → patios → Escuela Española (exterior) → Josefsplatz → Heldenplatz. Sin entrar en los Apartamentos Imperiales</span>
+              <div class="stop-detail">Fue residencia de los Habsburgo durante más de 600 años y hoy es sede del presidente de Austria. La Escuela Española de Equitación, fundada en 1572, entrena aquí a los famosos caballos lipizzanos.</div>
+            </div>
+
+            <div class="stop"><a href="https://www.google.com/maps/search/?api=1&query=Volksgarten+Vienna" target="_blank">Volksgarten</a><span class="note">12:00 — paseo por el jardín</span></div>
+          </div>
+
+          <div class="tip">☕ 12:30 — hueco para un café vienés con calma, con algún dulce sin gluten. Viena no es solo monumentos. Después, comida ligera.</div>
+
+          <div class="route" style="margin-top:8px">
+            <div class="stop fav">
+              <div class="stop-row">
+                <span class="star">⭐</span><a href="https://www.google.com/maps/search/?api=1&query=Hundertwasserhaus+Vienna" target="_blank">Hundertwasserhaus</a>
+                <button class="info-toggle" onclick="toggleStopInfo(this)">ⓘ</button>
+              </div>
+              <span class="note">15:00 — Hundertwasserhaus + Village, exterior, 45 min–1h. No se visita el interior de las viviendas</span>
+              <div class="stop-detail">Edificio de viviendas terminado en 1985, diseñado por el artista Friedensreich Hundertwasser junto al arquitecto Josef Krawina. Sin líneas rectas, suelos irregulares y vegetación en fachadas y tejado — su forma particular de convivir con la naturaleza.</div>
+            </div>
+          </div>
+
+          <span class="time-badge" style="margin-top:14px">16:30 / 17:00</span>
+          <div class="dinner-chip">
+            <span>Comida/cena — reservado <b>Nestroy Gasthaus & Biergarten</b></span>
+            <a onclick="goSection('vi-comer')">Ver ficha →</a>
+          </div>
+
+          <div class="route" style="margin-top:8px">
+            <div class="stop fav">
+              <div class="stop-row">
+                <span class="star">⭐</span><a href="https://www.google.com/maps/search/?api=1&query=Prater+Vienna" target="_blank">Prater</a>
+                <button class="info-toggle" onclick="toggleStopInfo(this)">ⓘ</button>
+              </div>
+              <span class="note">18:30 — sin prisas. Sin entrada general: se paga cada atracción por separado</span>
+              <div class="stop-detail">Antiguo coto de caza imperial, abierto al público en 1766 por el emperador José II. Uno de los parques públicos más antiguos de Europa.</div>
+            </div>
+
+            <div class="stop fav">
+              <div class="stop-row">
+                <span class="star">⭐</span><a href="https://www.google.com/maps/search/?api=1&query=Wiener+Riesenrad+Vienna" target="_blank">Wiener Riesenrad</a>
+                <button class="info-toggle" onclick="toggleStopInfo(this)">ⓘ</button>
+              </div>
+              <span class="note">Buscad la vuelta sobre las 19:00–19:30, cuando empieza a caer el sol. Comprad la entrada allí mismo, no hace falta antes</span>
+              <div class="stop-detail">Construida en 1897 para conmemorar el jubileo de oro del emperador Francisco José I, es una de las norias más antiguas del mundo todavía en funcionamiento. Entrada aprox. 12–15 €.</div>
+            </div>
+          </div>
+
+          <p style="font-size:12.5px;color:var(--text-dim);line-height:1.6;margin:10px 0 0">Después, paseo por el Prater ya iluminado. Vuelta al hotel sobre las 21:00 — última noche en Viena.</p>
+        </div></div>
+      </div>
+
+      <div class="day">
+        <div class="day-head" onclick="toggleDay(this)">
+          <div class="day-date">VIE<b>11</b></div>
+          <div class="day-title"><h4>Salida hacia Praga</h4><span>Sin nada programado</span></div>
+          <div class="day-chevron">▾</div>
+        </div>
+        <div class="day-body"><div class="day-body-inner">
+          <p style="font-size:13px;color:var(--text-dim);line-height:1.6;margin:0 0 12px">Desayuno temprano. Salida del hotel sobre las 07:45 — se ajusta cuando confirméis desde qué estación sale el tren a Praga.</p>
+          <div class="ticket" style="margin-bottom:0">
+            <div class="ticket-row">
+              <div><div class="ticket-city">VIE</div><div class="ticket-time">09:00</div></div>
+              <div class="ticket-arrow">🚆 — — —</div>
+              <div style="text-align:right"><div class="ticket-city">PRA</div><div class="ticket-time">14:10</div></div>
+            </div>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="section-label">Lo esencial del viaje</div>
+      <div class="card">
+        <p style="font-size:12.5px;color:var(--text-dim);line-height:1.6;margin:0 0 14px">Un viaje más ligero que la lista inicial de 20 monumentos: solo una visita de interior obligatoria, y el resto viviendo Viena en vez de haciendo cola.</p>
+        <div class="fav-grid" style="margin-bottom:16px">
+          <div class="fav-row"><span class="fav-rank">📚</span><span><b>Prunksaal</b> — la única visita de interior imprescindible</span></div>
+          <div class="fav-row"><span class="fav-rank">🏰</span><span><b>Schönbrunn</b> — jardines y Gloriette, sin entrada</span></div>
+          <div class="fav-row"><span class="fav-rank">🌙</span><span>Viena iluminada de noche — Ópera, Hofburg, Graben, Catedral</span></div>
+          <div class="fav-row"><span class="fav-rank">🎨</span><span>Hundertwasserhaus</span></div>
+          <div class="fav-row"><span class="fav-rank">🎡</span><span>Wiener Riesenrad al atardecer</span></div>
+        </div>
+        <div class="avoid-row"><span>✕</span><span>Belvedere, Hofburg y demás museos por dentro — el conjunto y los jardines cunden más que la colección.</span></div>
+      </div>
+
+      <div class="tip" style="--stop-color:#7A2E3B">💡 Aquí también contad entre 15 y 20 km al día. Con el billete de 7 días no penséis en billetes sueltos, solo validar al subir. Y dejad hueco para un café vienés con calma — Viena no es solo monumentos.</div>
+
+    </div>
+
+    <!-- DONDE COMER -->
+    <div class="sub-section" id="vi-comer">
+      <div class="section-label">Reservas — sin gluten</div>
+      <div class="rest-scroll">
+        <div class="rest-card">
+          <span class="rest-medal">🍽️</span>
+          <h5>Gasthaus Zum Wohl</h5>
+          <p>Junto al hotel, especializado en cocina sin gluten y sin lactosa — recomendado por la Cámara de Comercio de Viena. Reserva confirmada para 2 personas, martes 8 de septiembre a las 14:00 (ref. 35A764).</p>
+          <span class="rest-tag">Confirmada</span>
+          <a href="https://www.google.com/maps/search/?api=1&query=Gasthaus+Zum+Wohl+Vienna" target="_blank">Ver en el mapa</a>
+        </div>
+        <div class="rest-card">
+          <span class="rest-medal">🍽️</span>
+          <h5>Nestroy Gasthaus & Biergarten</h5>
+          <p>Cocina austríaca tradicional en Leopoldstadt, con carta sin gluten (incluido Wiener Schnitzel). Para el jueves, antes del Prater.</p>
+          <span class="rest-tag">Reservar</span>
+          <a href="https://www.google.com/maps/search/?api=1&query=Nestroy+Gasthaus+Biergarten+Vienna" target="_blank">Ver en el mapa</a>
+        </div>
+      </div>
+      <div class="tip" style="margin-top:14px">Sin más reservas cerradas — el resto de comidas quedan libres para decidir sobre la marcha.</div>
+    </div>
+
+    <!-- INFO -->
+    <div class="sub-section" id="vi-info">
+      <div class="info-accordion">
+        <div class="card" onclick="toggleInfo(this)">
+          <div class="info-head"><h3>💳 Dinero</h3><span class="info-icon">▾</span></div>
+          <div class="info-body">
+            <p>Moneda: <b>Euro (€)</b> — igual que en España, sin cambio de divisa. La tarjeta se acepta prácticamente en todas partes; llevad algo de efectivo para el Naschmarkt o propinas.</p>
+          </div>
+        </div>
+        <div class="card" onclick="toggleInfo(this)">
+          <div class="info-head"><h3>🚇 Transporte</h3><span class="info-icon">▾</span></div>
+          <div class="info-body">
+            <p>Billete sencillo 3,20 €, uno de 24h 10,20 € — pero para toda la estancia compensa el billete digital de 7 días (25,20 €, app oficial WienMobil), válido en metro, tranvía, bus y S-Bahn urbano.</p>
+            <p>No hace falta la Vienna City Card para este itinerario.</p>
+          </div>
+        </div>
+        <div class="card" onclick="toggleInfo(this)">
+          <div class="info-head"><h3>🔒 Seguridad</h3><span class="info-icon">▾</span></div>
+          <div class="info-body">
+            <p>Viena está entre las ciudades más seguras de Europa. Bastan las precauciones habituales: mochila cerrada y cuidado con el móvil en zonas muy turísticas o el metro en hora punta.</p>
+          </div>
+        </div>
+        <div class="card" onclick="toggleInfo(this)">
+          <div class="info-head"><h3>🗣️ Idioma</h3><span class="info-icon">▾</span></div>
+          <div class="info-body">
+            <p>Se habla alemán, pero con inglés os manejaréis sin problema en hoteles, restaurantes y comercios.</p>
+          </div>
+        </div>
+        <div class="card" onclick="toggleInfo(this)">
+          <div class="info-head"><h3>🚨 Emergencias</h3><span class="info-icon">▾</span></div>
+          <div class="info-body">
+            <p><b>112</b> — número de emergencias único en toda la Unión Europea, también en Austria.</p>
+            <p>Enchufe tipo <b>C/F</b>, 230V — el mismo que en España, no hace falta adaptador.</p>
+            <p>Descargad el mapa de Viena en <b>Google Maps sin conexión</b> antes de salir del hotel.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ================= PRAGA ================= -->
+  <div class="city-panel" id="panel-praga" style="--stop-color:#E3B23C">
+
+    <div class="section-nav">
+      <button class="active" data-target="pr-itinerario">Itinerario</button>
+      <button data-target="pr-comer">Dónde comer</button>
+      <button data-target="pr-info">Info práctica</button>
+    </div>
+
+    <!-- ITINERARIO -->
+    <div class="sub-section active" id="pr-itinerario">
+
+      <div class="ticket">
+        <div class="ticket-row">
+          <div><div class="ticket-city">VIE</div><div class="ticket-time">09:00</div></div>
+          <div class="ticket-arrow">🚆 — — —</div>
+          <div style="text-align:right"><div class="ticket-city">PRA</div><div class="ticket-time">14:10</div></div>
+        </div>
+        <div class="ticket-dash"></div>
+        <div class="ticket-meta"><span>Viernes 11 septiembre</span><b>K+K Hotel Fenix</b></div>
+      </div>
+
+      <a class="maps-btn" href="https://maps.app.goo.gl/GoExkY6NZsxEjMi77" target="_blank" rel="noopener">
+        🗺️ Ver mapa completo de Praga <small>(puntos señalizados)</small>
+      </a>
+
+      <div class="card">
+        <h3>Entradas que compraría</h3>
+        <ul class="check-list">
+          <li><span class="ok">✔</span><span><b>Castillo de Praga — circuito principal</b> — comprada, para el sábado 12/09, válida 2 días desde las 9:00.</span></li>
+          <li><span class="ok">✔</span><span><b>Museo Judío / Jewish Town</b> — para el domingo 13 a las 09:00 (600 CZK, entrada conjunta válida 3 días).</span></li>
+          <li><span class="no">✕</span><span>Klementinum, Torre de la Pólvora, Petrín, Casa Danzante, museos generales, crucero, teatro negro, conciertos — no hacen falta.</span></li>
+          <li><span class="no">✕</span><span>Torre del Ayuntamiento de la Plaza Vieja — se deja abierta para decidir el domingo, según cómo os encontréis.</span></li>
+        </ul>
+      </div>
+
+      <div class="day open">
+        <div class="day-head" onclick="toggleDay(this)">
+          <div class="day-date">VIE<b>11</b></div>
+          <div class="day-title"><h4>Llegada, Ciudad Nueva y Ciudad Vieja</h4><span>Empezar fuerte, sin mirar el reloj</span></div>
+          <div class="day-chevron">▾</div>
+        </div>
+        <div class="day-body"><div class="day-body-inner">
+          <p style="font-size:13px;color:var(--text-dim);line-height:1.6;margin:0 0 4px">Llegada 14:10. Entre bajar del tren, check-in en el K+K Hotel Fenix y dejar el equipaje, contad empezar a caminar sobre las 15:15–15:30. Nada de visitas de interior hoy — la tarde es para arrancar fuerte sin estar pendientes de horarios.</p>
+
+          <div class="route">
+            <div class="stop">
+              <div class="stop-row">
+                <a href="https://www.google.com/maps/search/?api=1&query=Wenceslas+Square+Prague" target="_blank">Plaza de Wenceslao</a>
+                <button class="info-toggle" onclick="toggleStopInfo(this)">ⓘ</button>
+              </div>
+              <span class="note">15:30 — hacia el Museo Nacional (solo exterior), 30–40 min</span>
+              <div class="stop-detail">Antigua plaza de mercado de caballos, escenario de momentos clave del siglo XX checo: desde la proclamación de la independencia en 1918 hasta las protestas de 1968 y la Revolución de Terciopelo de 1989.</div>
+            </div>
+
+            <div class="stop">
+              <div class="stop-row">
+                <a href="https://www.google.com/maps/search/?api=1&query=Powder+Tower+Prague" target="_blank">Torre de la Pólvora</a>
+                <button class="info-toggle" onclick="toggleStopInfo(this)">ⓘ</button>
+              </div>
+              <span class="note">16:15 — abre hasta las 20:30, pero no hace falta subir</span>
+              <div class="stop-detail">Puerta gótica del siglo XV, una de las trece puertas originales de la Ciudad Vieja. Le da nombre haber servido como almacén de pólvora en el siglo XVII. Justo enfrente, la Casa Municipal (Obecní dům), edificio Art Nouveau de 1912 donde se proclamó la independencia de Checoslovaquia en 1918.</div>
+            </div>
+
+            <div class="stop"><a href="https://www.google.com/maps/search/?api=1&query=Celetna+Street+Prague" target="_blank">Celetná</a><span class="note">16:40 — camino hacia Staré Město</span></div>
+
+            <div class="stop fav">
+              <div class="stop-row">
+                <span class="star">⭐</span><a href="https://www.google.com/maps/search/?api=1&query=Old+Town+Square+Prague" target="_blank">Plaza de la Ciudad Vieja</a>
+                <button class="info-toggle" onclick="toggleStopInfo(this)">ⓘ</button>
+              </div>
+              <span class="note">Týn, San Nicolás, monumento a Jan Hus, Ayuntamiento y Reloj Astronómico. Intentad llegar en una hora en punto (el desfile de los Apóstoles funciona cada hora de 08:00 a 23:00). No subáis aún a la torre — se deja abierta para el domingo</span>
+              <div class="stop-detail">El Reloj Astronómico (Orloj) se instaló en 1410 y es uno de los relojes astronómicos en funcionamiento más antiguos del mundo; el desfile de los Apóstoles se añadió en el siglo XVII. Las torres góticas de la Iglesia de Nuestra Señora de Týn, de los siglos XIV-XV, dominan la plaza desde entonces.</div>
+            </div>
+
+            <div class="stop"><a href="https://www.google.com/maps/search/?api=1&query=Melantrichova+Street+Prague" target="_blank">Paseo sin rumbo por Staré Město</a><span class="note">18:00 — Melantrichova → Havelská → Havelské tržiště → zona del Teatro Estatal → Ovocný trh → Národní třída, sin detenerse mucho</span></div>
+
+            <div class="stop">
+              <div class="stop-row">
+                <a href="https://www.google.com/maps/search/?api=1&query=Franz+Kafka+Rotating+Head+Prague" target="_blank">Cabeza giratoria de Kafka</a>
+                <button class="info-toggle" onclick="toggleStopInfo(this)">ⓘ</button>
+              </div>
+              <span class="note">19:00–19:30 — junto al centro comercial Quadrio, visita cortísima</span>
+              <div class="stop-detail">Escultura cinética de David Černý de 2014: 42 capas de acero inoxidable que giran de forma independiente y se alinean cada pocos minutos para formar el rostro de Franz Kafka.</div>
+            </div>
+
+            <div class="stop">
+              <div class="stop-row">
+                <a href="https://www.google.com/maps/search/?api=1&query=Dancing+House+Prague" target="_blank">Casa Danzante</a>
+                <button class="info-toggle" onclick="toggleStopInfo(this)">ⓘ</button>
+              </div>
+              <span class="note">19:45 — exterior, después paseo por la ribera del Moldava</span>
+              <div class="stop-detail">Edificio deconstructivista de 1996, diseño de Frank Gehry y Vlado Milunić, apodado "Fred y Ginger" por su silueta, que evoca una pareja bailando.</div>
+            </div>
+          </div>
+
+          <span class="time-badge">20:30 – 21:00</span>
+          <div class="dinner-chip">
+            <span>Cena — recomendado <b>Bassotto</b></span>
+            <a onclick="goSection('pr-comer')">Ver opciones →</a>
+          </div>
+          <p style="font-size:12.5px;color:var(--text-dim);line-height:1.6;margin:8px 0 0">Después, vuelta tranquila por la Plaza de la Ciudad Vieja iluminada hacia el hotel. Distancia estimada del día: 7–9 km.</p>
+        </div></div>
+      </div>
+
+      <div class="day">
+        <div class="day-head" onclick="toggleDay(this)">
+          <div class="day-date">SÁB<b>12</b></div>
+          <div class="day-title"><h4>Free Tour y Castillo de Praga</h4><span>El día más potente del viaje</span></div>
+          <div class="day-chevron">▾</div>
+        </div>
+        <div class="day-body"><div class="day-body-inner">
+          <p style="font-size:13px;color:var(--text-dim);line-height:1.6;margin:0 0 4px">08:30 desayuno, salida sobre las 09:15 hacia Malostranská en transporte público — no compensa caminar 35-40 min antes de un tour de 2h30 y el Castillo después. Contad estar allí sobre las 09:40–09:45.</p>
+
+          <span class="time-badge">10:00 – 12:30</span>
+          <div class="tip">Free Tour Civitatis ya reservado, punto de encuentro en la salida del metro Malostranská. Recorre Malostranská → ribera del Moldava → Museo Kafka → esculturas de David Černý → canal Čertovka → Kampa → Puente de Carlos → Klementinum → Biblioteca Nacional → Torre Astronómica → casco antiguo. Por eso Kampa, Čertovka, el Puente de Carlos y el Klementinum no se repiten el viernes.</div>
+
+          <span class="time-badge" style="margin-top:10px">12:30 – 13:15</span>
+          <div class="dinner-chip">
+            <span>Comida — recomendado <b>Alriso</b>, cerca de Malé náměstí</span>
+            <a onclick="goSection('pr-comer')">Ver opciones →</a>
+          </div>
+          <p style="font-size:12.5px;color:var(--text-dim);line-height:1.6;margin:8px 0 4px">Comed relativamente rápido: tenéis una visita con horario después. 13:15–13:45, traslado y subida en tranvía hasta Pražský hrad / Pohořelec — nada de subir andando desde Malá Strana, os robaría energía justo antes del Castillo.</p>
+
+          <div class="route">
+            <div class="stop fav">
+              <div class="stop-row">
+                <span class="star">⭐</span><a href="https://www.google.com/maps/search/?api=1&query=Prague+Castle" target="_blank">Castillo de Praga</a>
+                <button class="info-toggle" onclick="toggleStopInfo(this)">ⓘ</button>
+              </div>
+              <span class="note">13:45–16:30 aprox. — entrada ya comprada. Orden: 1) Catedral de San Vito 2) Antiguo Palacio Real 3) Basílica de San Jorge 4) Callejón del Oro, al final. Unas 2h45 de interior, sin ir corriendo</span>
+              <div class="stop-detail">El complejo de castillo más grande del mundo según el Guinness. La Catedral de San Vito se empezó en 1344 y no se terminó hasta 1929. El Salón Vladislav del Antiguo Palacio Real es tan grande que se usaba para torneos de caballería a caballo dentro del propio edificio. La Basílica de San Jorge, fundada en el año 920, es la iglesia más antigua conservada del recinto. El Callejón del Oro son casitas del siglo XVI para los guardias del castillo — Kafka vivió brevemente en el número 22. El sábado se prefiere al domingo porque San Vito no abre hasta las 12:00 los domingos por los oficios religiosos, mientras que el sábado abre desde las 09:00.</div>
+            </div>
+
+            <div class="stop"><a href="https://www.google.com/maps/search/?api=1&query=Hradcany+Square+Prague" target="_blank">Hradčany</a><span class="note">Desde las 16:30 — Plaza de Hradčany, exteriores de Loreto, calle Nerudova, bajando hacia Malá Strana</span></div>
+
+            <div class="stop"><a href="https://www.google.com/maps/search/?api=1&query=Mala+Strana+Prague" target="_blank">Malá Strana</a><span class="note">Nerudova → Plaza de Malá Strana → San Nicolás exterior → callejeo pausado. Sin Petrín: su funicular sigue fuera de servicio</span></div>
+
+            <div class="stop fav"><span class="star">⭐</span><a href="https://www.google.com/maps/search/?api=1&query=Charles+Bridge+Prague" target="_blank">Puente de Carlos</a><span class="note">Un segundo paso, ya sin tour, solo para pararos, hacer fotos y disfrutar las vistas</span></div>
+          </div>
+
+          <span class="time-badge" style="margin-top:14px">20:00</span>
+          <div class="dinner-chip">
+            <span>Cena — reservado <b>Restaurace Mincovna</b></span>
+            <a onclick="goSection('pr-comer')">Ver ficha →</a>
+          </div>
+          <p style="font-size:12.5px;color:var(--text-dim);line-height:1.6;margin:8px 0 0">Después, si aún hay ganas: Plaza Vieja → Puente de Carlos iluminado, y hotel. Distancia aproximada del día: 14–17 km, con transporte para las dos subidas.</p>
+        </div></div>
+      </div>
+
+      <div class="day">
+        <div class="day-head" onclick="toggleDay(this)">
+          <div class="day-date">DOM<b>13</b></div>
+          <div class="day-title"><h4>Josefov, Letná y vuestra Praga</h4><span>El barrio judío, el mejor mirador y tiempo libre</span></div>
+          <div class="day-chevron">▾</div>
+        </div>
+        <div class="day-body"><div class="day-body-inner">
+          <p style="font-size:13px;color:var(--text-dim);line-height:1.6;margin:0 0 4px">08:15 desayuno, salida 08:35–08:40. Hoy empieza pronto porque el Museo Judío abre domingo y cierra los sábados.</p>
+
+          <div class="route">
+            <div class="stop fav">
+              <div class="stop-row">
+                <span class="star">⭐</span><a href="https://www.google.com/maps/search/?api=1&query=Jewish+Quarter+Josefov+Prague" target="_blank">Barrio Judío</a>
+                <button class="info-toggle" onclick="toggleStopInfo(this)">ⓘ</button>
+              </div>
+              <span class="note">09:00–11:30 — entrada conjunta al Museo Judío (600 CZK, válida 3 días, cada recinto una vez). Imprescindibles: Sinagoga Pinkas y Antiguo Cementerio Judío; también Klausen, Maisel, Española y, si da tiempo, Vieja-Nueva. Calculad unas 2h30, sin leerlo todo</span>
+              <div class="stop-detail">Uno de los barrios judíos mejor conservados de Europa. El Antiguo Cementerio Judío se usó entre los siglos XV y XVIII, con tumbas apiladas en hasta 12 capas por falta de espacio. En las paredes de la Sinagoga Pinkas están escritos los nombres de unos 80.000 judíos checos y moravos asesinados en el Holocausto. La Sinagoga Vieja-Nueva, del siglo XIII, es la sinagoga en activo más antigua de Europa.</div>
+            </div>
+
+            <div class="stop"><a href="https://www.google.com/maps/search/?api=1&query=Parizska+Street+Prague" target="_blank">Pařížská</a><span class="note">11:30 — sinagogas exteriores, arquitectura de Josefov</span></div>
+
+            <div class="stop">
+              <div class="stop-row">
+                <a href="https://www.google.com/maps/search/?api=1&query=Rudolfinum+Prague" target="_blank">Rudolfinum</a>
+                <button class="info-toggle" onclick="toggleStopInfo(this)">ⓘ</button>
+              </div>
+              <span class="note">12:00 — de vuelta al Moldava</span>
+              <div class="stop-detail">Sala de conciertos neorrenacentista de 1885, sede de la Orquesta Filarmónica Checa.</div>
+            </div>
+          </div>
+
+          <span class="time-badge">12:30 – 13:30</span>
+          <div class="dinner-chip">
+            <span>Comida en Ciudad Vieja / Josefov</span>
+            <a onclick="goSection('pr-comer')">Ver opciones →</a>
+          </div>
+
+          <div class="route" style="margin-top:16px">
+            <div class="stop fav">
+              <div class="stop-row">
+                <span class="star">⭐</span><a href="https://www.google.com/maps/search/?api=1&query=Letna+Park+Prague" target="_blank">Parque de Letná</a>
+                <button class="info-toggle" onclick="toggleStopInfo(this)">ⓘ</button>
+              </div>
+              <span class="note">13:45–15:00 — miradores, metrónomo y paseo. Sin entrada, sin cola, sin horario. Se prefiere a Petrín: menos tiempo, encaja mejor tras Josefov y una vista más característica de Praga</span>
+              <div class="stop-detail">El metrónomo gigante se instaló en 1991 sobre el pedestal que antes ocupaba la mayor estatua de Stalin del mundo, derribada en 1962.</div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:16px">
+            <h3>15:30–17:30 · Vuestra Praga</h3>
+            <ul class="check-list">
+              <li><span class="ok">A</span><span>Volver despacio a la Ciudad Vieja y disfrutarla sin ruta — la opción favorita.</span></li>
+              <li><span class="ok">B</span><span>Subir a la Torre del Ayuntamiento de la Plaza Vieja, si apetece una panorámica.</span></li>
+              <li><span class="ok">C</span><span>Una terraza o café, y descansar.</span></li>
+              <li><span class="ok">D</span><span>Volver al hotel una hora y salir de nuevo después.</span></li>
+            </ul>
+          </div>
+
+          <span class="time-badge" style="margin-top:16px">17:30 – 19:00</span>
+          <div class="tip">Último paseo, sin guía ni mapa: Plaza de la Ciudad Vieja → Karlova → Klementinum → Puente de Carlos → orilla de Malá Strana.</div>
+
+          <span class="time-badge">19:30 – 20:00</span>
+          <div class="dinner-chip">
+            <span>Última cena — Malá Strana, o <b>Alriso</b> si preferís todo sin gluten</span>
+            <a onclick="goSection('pr-comer')">Ver opciones →</a>
+          </div>
+
+          <div class="tip"><b>⭐ El Puente de Carlos de noche</b> — aquí termina el viaje. Sin crucero, sin teatro negro, sin concierto: con dos noches completas, Praga iluminada aporta más que dos horas encerrados en un espectáculo.</div>
+        </div></div>
+      </div>
+
+      <div class="day">
+        <div class="day-head" onclick="toggleDay(this)">
+          <div class="day-date">LUN<b>14</b></div>
+          <div class="day-title"><h4>Regreso a Madrid</h4><span>Sin nada programado</span></div>
+          <div class="day-chevron">▾</div>
+        </div>
+        <div class="day-body"><div class="day-body-inner">
+          <p style="font-size:13px;color:var(--text-dim);line-height:1.6;margin:0 0 12px">Desayuno con tranquilidad, maletas y check-out. 09:00 traslado al aeropuerto.</p>
+          <div class="ticket" style="margin-bottom:0">
+            <div class="ticket-row">
+              <div><div class="ticket-city">PRA</div><div class="ticket-time">—</div></div>
+              <div class="ticket-arrow">✈ — — —</div>
+              <div style="text-align:right"><div class="ticket-city">MAD</div><div class="ticket-time">12:25</div></div>
+            </div>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="section-label">Lo esencial del viaje</div>
+      <div class="card">
+        <p style="font-size:12.5px;color:var(--text-dim);line-height:1.6;margin:0 0 14px">Lo que no quitaría bajo ningún concepto:</p>
+        <div class="fav-grid" style="margin-bottom:16px">
+          <div class="fav-row"><span class="fav-rank">🕐</span><span>Plaza de la Ciudad Vieja y el <b>Reloj Astronómico</b></span></div>
+          <div class="fav-row"><span class="fav-rank">🌉</span><span><b>Puente de Carlos</b>, de día y de noche</span></div>
+          <div class="fav-row"><span class="fav-rank">🏰</span><span><b>Castillo de Praga</b> y San Vito</span></div>
+          <div class="fav-row"><span class="fav-rank">🏘️</span><span>Malá Strana</span></div>
+          <div class="fav-row"><span class="fav-rank">✡️</span><span><b>Josefov</b> — cementerio judío y sinagogas</span></div>
+          <div class="fav-row"><span class="fav-rank">🌳</span><span><b>Letná</b></span></div>
+        </div>
+        <div class="avoid-row"><span>✕</span><span>Vyšehrad, Petrín y colección de museos — mejor tiempo de calidad en el centro histórico.</span></div>
+      </div>
+
+      <div class="tip" style="--stop-color:#33604A">💡 El sábado 12 hay un festival de pequeñas cervecerías de 08:00 a 20:00 — no cambia el plan, el Castillo tiene prioridad. Kampa y Čertovka ya los cubre el Free Tour del sábado.</div>
+
+    </div>
+
+    <!-- DONDE COMER -->
+    <div class="sub-section" id="pr-comer">
+      <div class="section-label">Sin gluten y cocina checa</div>
+      <div class="rest-scroll">
+        <div class="rest-card">
+          <span class="rest-medal">🍽️</span>
+          <h5>Bassotto</h5>
+          <p>Kavárna-Vinárna en Nové Město, especializado en sin gluten y muy bien situado para la ruta del viernes.</p>
+          <span class="rest-tag">Recomendado</span>
+          <a href="https://www.google.com/maps/search/?api=1&query=Bassotto+Kavarna+Vinarna+Prague" target="_blank">Ver en el mapa</a>
+        </div>
+        <div class="rest-card">
+          <span class="rest-medal">🍽️</span>
+          <h5>Alriso Risotteria Italiana</h5>
+          <p>100% sin gluten, en pleno Staré Město — pasta, risotto, carne y postres. Ideal cuando toca controlar el tiempo.</p>
+          <span class="rest-tag">Recomendado</span>
+          <a href="https://www.google.com/maps/search/?api=1&query=Alriso+Risotteria+Italiana+Prague" target="_blank">Ver en el mapa</a>
+        </div>
+        <div class="rest-card">
+          <span class="rest-medal">🍽️</span>
+          <h5>Restaurace Mincovna</h5>
+          <p>En la propia Plaza de la Ciudad Vieja, cocina checa con platos sin gluten identificados e información de alérgenos.</p>
+          <span class="rest-tag">Reservar</span>
+          <a href="https://www.google.com/maps/search/?api=1&query=Restaurace+Mincovna+Prague" target="_blank">Ver en el mapa</a>
+        </div>
+      </div>
+      <div class="tip" style="margin-top:14px">Sin más reservas cerradas — el resto de comidas quedan libres, decidiendo por ubicación en cada momento.</div>
+    </div>
+
+    <!-- INFO -->
+    <div class="sub-section" id="pr-info">
+      <div class="info-accordion">
+        <div class="card" onclick="toggleInfo(this)">
+          <div class="info-head"><h3>💳 Dinero</h3><span class="info-icon">▾</span></div>
+          <div class="info-body">
+            <p>Moneda: <b>corona checa (CZK)</b> — la República Checa no usa el euro. La tarjeta se acepta prácticamente en todas partes.</p>
+            <p>Evitad las casas de cambio de las zonas turísticas (Plaza de Wenceslao, Plaza de la Ciudad Vieja) — comisiones muy altas. Mejor un cajero de un banco conocido, y pagar siempre en CZK cuando el cajero o el datáfono pregunten si queréis convertir a euros.</p>
+          </div>
+        </div>
+        <div class="card" onclick="toggleInfo(this)">
+          <div class="info-head"><h3>🚇 Transporte</h3><span class="info-icon">▾</span></div>
+          <div class="info-body">
+            <p>Sistema integrado (metro, tranvía, autobús) con billetes por tiempo — 30 o 90 minutos. Si hacéis tres o más trayectos en un día compensa el billete de 24h. Comprad en la app PID Lítačka o en las máquinas amarillas del metro.</p>
+            <p>El tranvía 22 sube directamente hasta el Castillo — el que usaréis el sábado.</p>
+          </div>
+        </div>
+        <div class="card" onclick="toggleInfo(this)">
+          <div class="info-head"><h3>🔒 Seguridad</h3><span class="info-icon">▾</span></div>
+          <div class="info-body">
+            <p>Praga es una ciudad segura; lo único a vigilar son los carteristas en zonas muy turísticas — Puente de Carlos, Plaza de la Ciudad Vieja y el transporte público en hora punta. Mochila cerrada y cuidado con el móvil.</p>
+          </div>
+        </div>
+        <div class="card" onclick="toggleInfo(this)">
+          <div class="info-head"><h3>🗣️ Idioma</h3><span class="info-icon">▾</span></div>
+          <div class="info-body">
+            <p>Se habla checo, pero con inglés os manejaréis sin problema en el centro histórico, hoteles y restaurantes.</p>
+          </div>
+        </div>
+        <div class="card" onclick="toggleInfo(this)">
+          <div class="info-head"><h3>🚨 Emergencias</h3><span class="info-icon">▾</span></div>
+          <div class="info-body">
+            <p><b>112</b> — número de emergencias único en toda la Unión Europea, también en Chequia.</p>
+            <p>Enchufe tipo <b>E</b>, 230V — compatible con los enchufes españoles tipo F, no debería haceros falta adaptador.</p>
+            <p>Descargad el mapa de Praga en <b>Google Maps sin conexión</b> antes de salir del hotel.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+  document.querySelectorAll('.city-tab').forEach(tab=>{
+    tab.addEventListener('click', ()=>{
+      document.querySelectorAll('.city-tab').forEach(t=>t.classList.remove('active'));
+      document.querySelectorAll('.city-panel').forEach(p=>p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('panel-'+tab.dataset.city).classList.add('active');
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+  });
+
+  document.querySelectorAll('.section-nav button').forEach(btn=>{
+    btn.addEventListener('click', ()=>goSection(btn.dataset.target));
+  });
+
+  function goSection(id){
+    const panel = document.getElementById(id).closest('.city-panel');
+    panel.querySelectorAll('.section-nav button').forEach(b=>b.classList.toggle('active', b.dataset.target===id));
+    panel.querySelectorAll('.sub-section').forEach(s=>s.classList.toggle('active', s.id===id));
+    panel.querySelector('.section-nav').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  function toggleDay(head){
+    head.parentElement.classList.toggle('open');
+  }
+
+  function toggleInfo(card){
+    card.classList.toggle('info-open');
+  }
+
+  function toggleStopInfo(btn){
+    btn.closest('.stop').classList.toggle('info-open');
+  }
+</script>
+</body>
+</html>
